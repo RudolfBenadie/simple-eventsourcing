@@ -1,0 +1,14 @@
+{
+  "name": "simple-eventsourcing",
+  "version": "1.0.0",
+  "description": "A simple eventsourcing walkthrough",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "eventsourcing"
+  ],
+  "author": "Leadforensics",
+  "license": "ISC"
+}
