@@ -93,3 +93,10 @@ export class Server { };
 ```
 
 Run the test and verify that it passes (green)
+
+- Add tests for starting and stopping server.
+- Run the tests and see them fail (red)
+- Add code to implement server with start and stop functions
+- Run tests and see them pass (green)
+
+Fin
