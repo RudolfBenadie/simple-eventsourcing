@@ -20,3 +20,14 @@ In root add ".gitignore"
 ```
 **/node_modules
 ```
+
+## Chapter 2 - Event publisher
+
+Install packages
+
+```brainfuck
+$ npm i -D jest
+$ npm i zeromq@5
+```
+
+Create folder src and test

@@ -8,5 +8,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "zeromq": "^5.2.8"
+  },
+  "devDependencies": {
+    "jest": "^29.2.2"
+  }
 }
