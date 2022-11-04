@@ -130,7 +130,7 @@ Run the test and verify that it passes (green)
 
 Fin - See final commit for chapter 2
 
-## Chapter 3 - Event subscriber
+## Chapter 3 - Event subscriber > Server
 
 As in chapter 2 set up the environment to start working:
 (Verify that you are working from the correct folder /event-subscriber)
@@ -261,3 +261,35 @@ $\event-publisher> npm run start
 $\event-subscriber> npm run build
 $\event-subscriber> npm run start
 ```
+
+## Chapter 4 - Event subscriber > Repository
+
+Add a test file test/repsoitory.test.ts
+
+```javascript
+import { Repository } from '../src/repository';
+
+let repository: Repository | null;
+
+beforeAll(() => {
+  repository = new Repository();
+});
+describe('Given a Server class', () => {
+  describe('When the server is instantiated', () => {
+    it('Then the server must exist', () => {
+      expect(repository).toBeDefined();
+    });
+  });
+});
+```
+
+The test should fail because the repsoitory files does not exist yet (red).
+Implement a simple repository class src/repository.ts:
+
+```javascript
+export class Repository {}
+```
+
+Run the test and see it pass (green).
+
+Add a test for Repository.commit() that will save an event in the eventstore.

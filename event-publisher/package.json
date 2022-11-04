@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "jest --detectOpenHandles --forceExit",
+    "test": "jest --verbose --detectOpenHandles --forceExit",
     "start": "node dist/src/index"
   },
   "keywords": [],

@@ -1,4 +1,3 @@
-import { start } from 'repl';
 import { Server } from '../src/server';
 
 let server: Server | null;
