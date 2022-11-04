@@ -20,15 +20,6 @@ export class Server {
     return "No more visits";
   }
 
-  #sendVisit() {
-    const visit = this.#visitGenerator?.next();
-    if (visit && !visit.done) {
-      console.log("Sending a multipart (event)-message envelope");
-      console.log(`visit: ${JSON.stringify(visit.value)}`);
-      sock.send(["visit", visit.value]);
-    }
-  }
-
   start() {
     this.#visitGenerator = this.#getVisits();
     this.#timer = setInterval(() => {
@@ -36,7 +27,7 @@ export class Server {
       if (visit && !visit.done) {
         console.log("Sending a multipart (event)-message envelope");
         console.log(`visit: ${JSON.stringify(visit.value)}`);
-        sock.send(["visit", visit.value]);
+        sock.send(["visit", JSON.stringify(visit.value)]);
       }
     }, 2500);
   }
