@@ -23,12 +23,20 @@ In root add ".gitignore"
 
 ## Chapter 2 - Event publisher
 
+Create folder src and test
+Add file test/server.test.ts
+
 Install packages
 
 ```brainfuck
-$ npm i -D npm i jest ts-jest @types/jest @types/node
+$ npm i -D jest ts-jest @types/jest ts-node @types/node
 $ jest init
-$ npm i npm i ts-node zeromq@5
+$ npm i zeromq@5
+```
+
+```brainfuck
+$ npx tsc --init
+$ jest --init
 ```
 
 Also update the typescript transformer in the generated jest config file:
@@ -40,22 +48,26 @@ Also update the typescript transformer in the generated jest config file:
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: ['<rootDir>/node_modules/'],
+  transformIgnorePatterns: ['./node_modules/'],
 ```
-
-Create folder src and test
-Add file test/server.test.ts
 
 This will result in our first failing test - it is failing because no tests have been added to the file yet. (Red)
 
 Add the following code in the test file to make the test pass (this only verifies that our testing framework is operational):
 
 ```
+import { Server } from '../src/server';
+let server: Server | null;
+
+beforeAll(() => {
+  server = new Server();
+})
+
 describe('Given a Server class', () => {
   describe('When the server is instantiated', () => {
     it('Then the server must exist', () => {
-      expect(true).toBe(true);
-    })
+      expect(server).toBeDefined();
+    });
   })
 })
 ```
@@ -100,3 +112,32 @@ Run the test and verify that it passes (green)
 - Run tests and see them pass (green)
 
 Fin - See final commit for chapter 2
+
+## Chapter 3 - Event subscriber
+
+As in chapter 2 set up the environment to start working:
+(Verify that you are working from the correct folder /event-subscriber)
+
+Create folder src and test
+Add file test/server.test.ts
+
+Install packages
+
+```brainfuck
+$ npm i -D jest ts-jest @types/jest ts-node @types/node
+$ npx tsc --init
+$ jest --init
+$ npm i zeromq@5
+```
+
+Also update the typescript transformer in the generated jest config file:
+
+```ts
+  // A map from regular expressions to paths to transformers
+  transform: {
+    '^.+\\.ts?$': 'ts-jest',
+  },
+
+  // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
+  transformIgnorePatterns: ['./node_modules/'],
+```
