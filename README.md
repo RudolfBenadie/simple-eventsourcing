@@ -39,7 +39,7 @@ $ npx tsc --init
 $ jest --init
 ```
 
-Also update the typescript transformer in the generated jest config file:
+Update the typescript transformer in the generated jest config file:
 
 ```ts
   // A map from regular expressions to paths to transformers
@@ -49,6 +49,23 @@ Also update the typescript transformer in the generated jest config file:
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: ['./node_modules/'],
+```
+
+Update the typescript configuration file (tsconfig.js) and update the following values:
+
+```json
+  "sourceMap": true, /* Create source map files for emitted JavaScript files. */
+  "outDir": "./dist", /* Specify an output folder for all emitted files. */
+```
+
+Update package.json to add teh following scripts section:
+
+```json
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "jest --detectOpenHandles --forceExit",
+    "start": "node dist/src/index"
+  },
 ```
 
 This will result in our first failing test - it is failing because no tests have been added to the file yet. (Red)
@@ -130,7 +147,7 @@ $ jest --init
 $ npm i zeromq@5
 ```
 
-Also update the typescript transformer in the generated jest config file:
+Update the typescript transformer in the generated jest config file:
 
 ```ts
   // A map from regular expressions to paths to transformers
@@ -140,6 +157,23 @@ Also update the typescript transformer in the generated jest config file:
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: ['./node_modules/'],
+```
+
+Update the typescript configuration file (tsconfig.js) and update the following values:
+
+```json
+  "sourceMap": true, /* Create source map files for emitted JavaScript files. */
+  "outDir": "./dist", /* Specify an output folder for all emitted files. */
+```
+
+Update package.json to add teh following scripts section:
+
+```json
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "jest --detectOpenHandles --forceExit",
+    "start": "node dist/src/index"
+  },
 ```
 
 Again as before this will result in our first failing test - it is failing because no tests have been added to the file yet. (Red)
@@ -220,3 +254,10 @@ export class Server {
 >
 > Build both projects, then start the subscriber which will start listening on the specified port for any messages.
 > Next you can start the publishing server which will log out the data to the console and send the message on the message bus. The subscriber will receive the message and log it to the console too. This takes care of our simple system message bus.
+
+```brainfuck
+$\event-publisher> npm run build
+$\event-publisher> npm run start
+$\event-subscriber> npm run build
+$\event-subscriber> npm run start
+```
