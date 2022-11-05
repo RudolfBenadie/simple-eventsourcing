@@ -292,4 +292,159 @@ export class Repository {}
 
 Run the test and see it pass (green).
 
-Add a test for Repository.commit() that will save an event in the eventstore.
+Add a test for Repository.getById(visitId: number) that will return an empty array if no events exist for the visitId.
+
+```javascript
+Given('Given an instance of the repository', () => {
+  When('When retrieving the events for an entity visitId', () => {
+    And('And the eventStream store is empty', () => {
+      Then('Then an empty array is returned', () => {
+        const readResult = repository?.getById(1);
+        expect(readResult).toBeInstanceOf(Array);
+        expect(readResult?.length).toEqual(0);
+      });
+    });
+  });
+});
+```
+
+(red)
+
+Implement code to make the test pass. Write only the absolute minimum code, with the least complexity to make the test pass:
+
+```javascript
+  getById(visitId: number): Array<any> {
+    return new Array();
+  }
+```
+
+(green)
+
+Add the next test for the commit function.
+
+(refactor)
+
+```javascript
+Given('Given an instance of the repository', () => {
+  When('When committing an event to the eventStream store', () => {
+    And('And the event has an visitId', () => {
+      Then(
+        'Then the event is stored in the eventStream and the visitId is returned',
+        () => {
+          const idList = [0, 1];
+          idList.forEach((visitId) => {
+            const commitResult = repository?.commit({ visitId });
+            expect(commitResult).toEqual(visitId);
+          });
+        }
+      );
+    });
+  });
+});
+```
+
+(red)
+
+Implement the least code to satidfy the test:
+
+```javascript
+  commit(event: any): number | null {
+    return event.visitId;
+  }
+```
+
+(green)
+
+Extend the test suite to test retrieving data from the store:
+
+(refactor)
+
+```javascript
+Given('Given an instance of the repository', () => {
+  When('When committing an event to the eventStream store', () => {
+    And('And the event has an visitId', () => {
+      Then(
+        'Then the event is stored in the eventStream and the visitId is returned',
+        () => {
+          const idList = [0, 1];
+          idList.forEach((visitId) => {
+            const commitResult = repository?.commit({ visitId });
+            expect(commitResult).toEqual(visitId);
+          });
+        }
+      );
+    });
+
+    And(
+      'And the events for the visitId is queried from the eventStream store',
+      () => {
+        Then('Then an array of events is returned for the visitId', () => {
+          const idList = [0, 1];
+          idList.forEach((visitId) => {
+            repository?.commit({ visitId });
+            const readResult = repository?.getById(visitId);
+            expect(readResult).toBeInstanceOf(Array);
+            expect(readResult?.length).toBeGreaterThan(0);
+          });
+        });
+      }
+    );
+  });
+});
+```
+
+(red)
+
+Implement the memory store to make the test pass:
+
+```javascript
+  commit(event: any): number | null {
+    this.#eventStream.push(event);
+    return event.visitId;
+  }
+```
+
+(green)
+
+Add tests for event validation. The event should have a visitId so we'll be able to retrieve all events for by visitId.
+
+```javascript
+And('And the event does not have an visitId', () => {
+  Then('Then the system must throw a EventIdNotDefinedException', () => {
+    expect(() => repository?.commit({ visitId: 9000000001 })).toThrow();
+  });
+});
+```
+
+(red)
+
+Implement a new exception class:
+
+```javascript
+export class EventIdNotDefinedException extends Error {
+  constructor(message: string = '') {
+    super(message);
+
+    // 👇️ because we are extending a built-in class
+    Object.setPrototypeOf(this, EventIdNotDefinedException.prototype);
+  }
+}
+```
+
+(red)
+
+And also update the code to validate and event.
+
+```javascript
+  commit(event: any): number | null {
+    if (!Object.getOwnPropertyNames(event).includes('visitId')) {
+      throw new EventIdNotDefinedException();
+    }
+    this.#eventStream.push(event);
+    return event.visitId;
+  }
+```
+
+(green)
+
+This satisfies the requirement for our simple repository to to store our event stream in a memory store.
