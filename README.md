@@ -448,3 +448,7 @@ And also update the code to validate and event.
 (green)
 
 This satisfies the requirement for our simple repository to to store our event stream in a memory store.
+
+## Chapter 5 - Event subscriber > EventHandler
+
+Add a test file test/eventhandler.test.ts

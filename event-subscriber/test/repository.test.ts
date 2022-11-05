@@ -43,7 +43,7 @@ Given('Given an instance of the repository', () => {
 
     And('And the event does not have an visitId', () => {
       Then('Then the system must throw a EventIdNotDefinedException', () => {
-        expect(() => repository?.commit({ visitId: 9000000001 })).toThrow();
+        expect(() => repository?.commit({ id: 9000000001 })).toThrow();
       })
     })
 
