@@ -452,3 +452,73 @@ This satisfies the requirement for our simple repository to to store our event s
 ## Chapter 5 - Event subscriber > EventHandler
 
 Add a test file test/eventhandler.test.ts
+
+```javascript
+Given('Given the EventHandler class', () => {
+  When('When the class is instantiated', () => {
+    Then('Then the eventHandler object must exist', () => {
+      eventHandler = new EventHandler();
+      expect(eventHandler).toBeDefined();
+    });
+  });
+});
+```
+
+(red)
+
+Add the EventHandler class:
+
+eventHandler.ts
+
+```javascript
+export class EventHandler {}
+```
+
+(green)
+
+(refactor)
+
+Refactor to enable the class to be instantiated with an event, or an event assigned to the event property.
+
+```javascript
+Given('Given the EventHandler class', () => {
+  When('When the class is instantiated', () => {
+    Then('Then the eventHandler object must exist', () => {
+      eventHandler = new EventHandler();
+      expect(eventHandler).toBeDefined();
+    });
+  });
+
+  When('When the class is instantiated with and event', () => {
+    Then('Then invoking the event method returns the event', () => {
+      const visitEvent = { visitId: 9000000001 };
+      eventHandler = new EventHandler(visitEvent);
+      const eventQueryResult = eventHandler.event;
+      console.log(eventQueryResult);
+      expect(eventQueryResult).toStrictEqual(visitEvent);
+    });
+  });
+});
+```
+
+(red)
+
+Refactor the class to make the test pass:
+
+```javascript
+export class EventHandler {
+  event: any;
+
+  constructor(event: any = undefined) {
+    if (event) this.setEvent(event);
+  }
+
+  setEvent(event: any) {
+    this.event = event;
+  }
+}
+```
+
+(green)
+
+(refactor)
