@@ -470,3 +470,56 @@ Given('Given a Server class', () => {
   });
 });
 ```
+
+(red)
+
+Add function definition in messageHandler.ts
+
+```javascript
+export default function (messageTopic: Buffer, message: Buffer): void {
+  const topic = messageTopic.toString();
+  const visitMessage = JSON.parse(message.toString());
+}
+```
+
+(green)
+
+(refactor)
+
+Add test for failing message validation:
+
+```javascript
+Given('Given the messageHandler function', () => {
+  When(
+    `When the function is passed a payload without the property 'visitId'`,
+    () => {
+      Then(
+        'Then the function must throw EventVisitIdNotDefinedException',
+        () => {
+          expect(() => {
+            const messageTopic: Buffer = Buffer.from('visit');
+            const message: Buffer = Buffer.from(`{"id":9000000001}`);
+            messageHandler(messageTopic, message);
+          }).toThrow(EventVisitIdNotDefinedException);
+        }
+      );
+    }
+  );
+});
+```
+
+(red)
+
+```javascript
+import { EventVisitIdNotDefinedException } from './domainExceptions';
+
+export default function (messageTopic: Buffer, message: Buffer): void {
+  const topic = messageTopic.toString();
+  const visitMessage = JSON.parse(message.toString());
+  if (!visitMessage.visitId) throw new EventVisitIdNotDefinedException();
+}
+```
+
+(green)
+
+(refactor)
