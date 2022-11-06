@@ -1,4 +1,4 @@
-import { EventIdNotDefinedException } from './domainExceptions';
+import { EventVisitIdNotDefinedException } from './domainExceptions';
 
 export class Repository {
   #eventStream: Array<any>;
@@ -13,7 +13,7 @@ export class Repository {
 
   commit(event: any): number | null {
     if (!Object.getOwnPropertyNames(event).includes('visitId')) {
-      throw new EventIdNotDefinedException();
+      throw new EventVisitIdNotDefinedException();
     }
     this.#eventStream.push(event);
     return event.visitId;

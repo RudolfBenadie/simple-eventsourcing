@@ -1,5 +1,5 @@
 import { Server } from 'http';
-import { EventIdNotDefinedException } from '../src/domainExceptions';
+import { EventVisitIdNotDefinedException } from '../src/domainExceptions';
 import { Repository } from '../src/repository';
 const Given = describe, When = describe, And = describe, Then = it;
 
@@ -42,7 +42,7 @@ Given('Given an instance of the repository', () => {
     })
 
     And('And the event does not have an visitId', () => {
-      Then('Then the system must throw a EventIdNotDefinedException', () => {
+      Then('Then the system must throw a EventVisitIdNotDefinedException', () => {
         expect(() => repository?.commit({ id: 9000000001 })).toThrow();
       })
     })

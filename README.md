@@ -410,7 +410,7 @@ Add tests for event validation. The event should have a visitId so we'll be able
 
 ```javascript
 And('And the event does not have an visitId', () => {
-  Then('Then the system must throw a EventIdNotDefinedException', () => {
+  Then('Then the system must throw a EventVisitIdNotDefinedException', () => {
     expect(() => repository?.commit({ visitId: 9000000001 })).toThrow();
   });
 });
@@ -421,12 +421,12 @@ And('And the event does not have an visitId', () => {
 Implement a new exception class:
 
 ```javascript
-export class EventIdNotDefinedException extends Error {
+export class EventVisitIdNotDefinedException extends Error {
   constructor(message: string = '') {
     super(message);
 
     // 👇️ because we are extending a built-in class
-    Object.setPrototypeOf(this, EventIdNotDefinedException.prototype);
+    Object.setPrototypeOf(this, EventVisitIdNotDefinedException.prototype);
   }
 }
 ```
@@ -438,7 +438,7 @@ And also update the code to validate and event.
 ```javascript
   commit(event: any): number | null {
     if (!Object.getOwnPropertyNames(event).includes('visitId')) {
-      throw new EventIdNotDefinedException();
+      throw new EventVisitIdNotDefinedException();
     }
     this.#eventStream.push(event);
     return event.visitId;
@@ -449,16 +449,16 @@ And also update the code to validate and event.
 
 This satisfies the requirement for our simple repository to to store our event stream in a memory store.
 
-## Chapter 5 - Event subscriber > EventHandler
+## Chapter 5 - Event subscriber > MessageHandler
 
-Add a test file test/eventhandler.test.ts
+Add a test file test/messagehandler.test.ts
 
 ```javascript
-Given('Given the EventHandler class', () => {
+Given('Given the MessageHandler class', () => {
   When('When the class is instantiated', () => {
-    Then('Then the eventHandler object must exist', () => {
-      eventHandler = new EventHandler();
-      expect(eventHandler).toBeDefined();
+    Then('Then the messageHandler object must exist', () => {
+      messageHandler = new MessageHandler();
+      expect(messageHandler).toBeDefined();
     });
   });
 });
@@ -466,36 +466,35 @@ Given('Given the EventHandler class', () => {
 
 (red)
 
-Add the EventHandler class:
+Add the MessageHandler class:
 
-eventHandler.ts
+messageHandler.ts
 
 ```javascript
-export class EventHandler {}
+export class MessageHandler {}
 ```
 
 (green)
 
 (refactor)
 
-Refactor to enable the class to be instantiated with an event, or an event assigned to the event property.
+Refactor to enable the class to be instantiated with an message, or an message assigned to the message property.
 
 ```javascript
-Given('Given the EventHandler class', () => {
+Given('Given the MessageHandler class', () => {
   When('When the class is instantiated', () => {
-    Then('Then the eventHandler object must exist', () => {
-      eventHandler = new EventHandler();
-      expect(eventHandler).toBeDefined();
+    Then('Then the messageHandler object must exist', () => {
+      messageHandler = new MessageHandler();
+      expect(messaageHandler).toBeDefined();
     });
   });
 
-  When('When the class is instantiated with and event', () => {
-    Then('Then invoking the event method returns the event', () => {
-      const visitEvent = { visitId: 9000000001 };
-      eventHandler = new EventHandler(visitEvent);
-      const eventQueryResult = eventHandler.event;
-      console.log(eventQueryResult);
-      expect(eventQueryResult).toStrictEqual(visitEvent);
+  When('When the class is instantiated with a message', () => {
+    Then('Then invoking the message method returns the message', () => {
+      const visitMessage = { visitId: 9000000001 };
+      messageHandler = new MessageHandler(visitMessage);
+      const messaageQueryResult = messageHandler.message;
+      expect(messageQueryResult).toStrictEqual(visitMessage);
     });
   });
 });
@@ -506,15 +505,15 @@ Given('Given the EventHandler class', () => {
 Refactor the class to make the test pass:
 
 ```javascript
-export class EventHandler {
-  event: any;
+export class MessageHandler {
+  message: any;
 
-  constructor(event: any = undefined) {
-    if (event) this.setEvent(event);
+  constructor(message: any = undefined) {
+    if (message) this.setMessage(message);
   }
 
-  setEvent(event: any) {
-    this.event = event;
+  setMessage(message: any) {
+    this.messaage = message;
   }
 }
 ```
