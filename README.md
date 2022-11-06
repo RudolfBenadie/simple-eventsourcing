@@ -449,6 +449,24 @@ And also update the code to validate and event.
 
 This satisfies the requirement for our simple repository to to store our event stream in a memory store.
 
-## Chapter 5 - Event subscriber > MessageHandler
+This satisfies the requirement for our simple repository to to store our event stream in a memory store.
 
-Add a test file test/messagehandler.test.ts
+## Chapter 5 - Refactor event subscriber > Implement eventhandler
+
+Add test file messageHandler.test.ts:
+
+```javascript
+import { messageHandler } from '../src/messageHandler';
+const Given = describe,
+  When = describe,
+  And = describe,
+  Then = it;
+
+Given('Given a Server class', () => {
+  When('When the server is instantiated', () => {
+    Then('Then the server must exist', () => {
+      expect(messageHandler).toBeDefined();
+    });
+  });
+});
+```
